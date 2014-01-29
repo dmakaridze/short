@@ -1,0 +1,10 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/(.+)$ index.php?page=$1&com=$2&msg=$3&id=$4
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9\-]+)/(.+)$ index.php?page=$1&com=$2&msg=$3
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9\-]+)$ index.php?page=$1&com=$2
+RewriteRule ^([a-zA-Z0-9]+)$ index.php?page=$1

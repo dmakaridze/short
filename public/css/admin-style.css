@@ -1,0 +1,113 @@
+@charset "UTF-8";
+
+body {
+	font-family: helvetica, arial, verdana, sans-serif;
+	font-size: 11px;
+}
+
+#login-form {
+	width: 300px;
+	margin: 0 auto;
+}
+
+#login-form div#username, #login-form div#password {
+	display: block;
+	height: 40px;
+}
+
+#login-form div#username input, #login-form div#password input {
+	float: right;
+}
+
+#login-form #buttons {
+	position: relative;
+	right: -180px;
+	height: 40px;
+}
+
+h2.message {
+	font-size: 12px;
+	font-family: verdana;
+	font-weight: 100;
+	color: #ff0000;
+}
+
+#content {
+	float: left;
+	display: block;
+	padding: 5px 10px;
+	border: 1px solid #aaa;
+	margin: 0 0 0 10px;
+	width: 920px;
+	border-radius: 4px;
+	min-height: 200px;
+}
+
+#admin-menu {
+	float: left;
+}
+
+table#adminmenuitems td {
+	padding: 3px 5px;
+	border-right: 1px solid #ccc;
+}
+
+tr.odd {
+	background: #ddd;
+}
+
+table#adminmenuitems {
+	border-spacing: 0;
+	margin: 13px 5px;
+	border-left: solid 1px #ccc;
+	border-bottom: solid 1px #ccc;
+}
+
+div#message {
+	margin: 3px 5px;
+	padding: 3px 5px;
+	background: #ddffdd;
+}
+
+#license-block {
+	background: #ddffdd;
+	width: 1090px;
+	margin: 10px 0;
+	padding: 7px 10px;
+	text-align: center;
+}
+
+#container {
+	display: block;
+	width: 1110px;
+	margin: auto;
+}
+
+#node-input-form {
+	padding: 10px 15px;
+	float: left;
+}
+
+#node-input-form .form-label {
+	display: block;
+	font-weight: 700;
+}
+
+#node-input-form .input-text {
+	border: 1px solid #ccc;
+	padding: 3px 7px 5px;
+	width: 800px;
+}
+
+#node-input-form textarea.input-text {
+	resize: vertical;
+}
+
+#content-wrapper {
+	display: block;
+}
+#header,
+#license-block {
+	display: inline-block;
+	width:1100px;
+}
