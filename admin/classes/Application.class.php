@@ -17,6 +17,8 @@ class Application {
 		$this->regions ['content'] = '';
 	}
 	public function run() {
+		print_r($this);
+		echo "\r\n</br>\r\n";
 		session_start ();
 		if (! isset ( $_SESSION ['name'] ) && ($this->com != 'login') && ($this->com != 'verify')) {
 			header ( "Location:/admin/login" );
@@ -29,7 +31,7 @@ class Application {
 		}
 		switch ($this->com) {
 			case 'login' :
-				$this->regions ['content'] = template_out ( 'Login', array (
+				$this->regions ['content'] = template_out ( 'login', array (
 						'msg' => $this->msg 
 				) );
 				break;
@@ -74,7 +76,7 @@ class Application {
 				break;
 			default :
 		}
-		print template_out ( 'Admin', array (
+		print template_out ( 'admin', array (
 				'title' => 'Administration Panel',
 				'content' => $this->regions ['content'],
 				'leftcol' => $this->regions ['leftcol'] 
