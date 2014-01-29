@@ -38,9 +38,7 @@ class AdminMenu {
 		return $htmlmenu;
 	}
 	public function Load() {
-		$dbConf = new DBConfig ();
-		$db = new mysqli ( $dbConf->host(), $dbConf->user(), $dbConf->password(), $dbConf->name() );
-		if ($db->connect_error) {
+$db = new mysqli ( SHORTDBHOST, SHORTDBUSER, SHORTDBPASSWORD, SHORTDBNAME );		if ($db->connect_error) {
 			die ( "Database connection error: " . $db->connect_error );
 		}
 		
@@ -71,9 +69,7 @@ class AdminMenu {
 	}
 	public function Edit() {
 		$htmlcontent = '<div id="content">';
-		$dbConf = new DBConfig ();
-		$db = new mysqli ( $dbConf->host(), $dbConf->user(), $dbConf->password(), $dbConf->name() );
-		
+$db = new mysqli ( SHORTDBHOST, SHORTDBUSER, SHORTDBPASSWORD, SHORTDBNAME );		
 		if ($db->connect_error) {
 			die ( "Database connection error: " . $db->connect_error );
 		}

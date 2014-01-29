@@ -8,9 +8,7 @@ class User {
 	}
 	public function CheckUser() {
 		$fp = fopen ( APPREALPATH . '/data.txt', 'a' );
-		$dbConf = new DBConfig ();
-		$db = new mysqli ( $dbConf->host(), $dbConf->user(), $dbConf->password(), $dbConf->name() );
-		if ($db->connect_error) {
+$db = new mysqli ( SHORTDBHOST, SHORTDBUSER, SHORTDBPASSWORD, SHORTDBNAME );		if ($db->connect_error) {
 			die ( "Database connection error: " . $db->connect_error );
 		}
 		$username = $this->name;

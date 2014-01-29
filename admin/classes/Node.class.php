@@ -4,43 +4,41 @@ class Node {
 	private $type;
 	public function __construct($type, $values) {
 		$this->properties = $values;
-		$this->type=$type;
+		$this->type = $type;
 	}
 	public function __get($property) {
 		return $property;
 	}
-	public function PutNode($tablename) {
-		$dbConf = new DBConfig ();
-		$db = new mysqli ( $dbConf->host (), $dbConf->user (), $dbConf->password (), $dbConf->name () );
+	public function PutNode() {
+		$db = new mysqli ( SHORTDBHOST, SHORTDBUSER, SHORTDBPASSWORD, SHORTDBNAME );
 		if ($db->connect_error) {
 			die ( "Database connection error: " . $db->connect_error );
 		}
-	$NodeType = new NodeType($this->properties ['type']);
-		$columns = $NodeType->Fields();
-		$allcolumns = '';
-		foreach ( $columns as $column ) {
-			$values [$column[0]] = $this->properties [$column[0]];
-			if (is_string ( $values [$column[0]] )) {
-				$values [$column[0]] = htmlspecialchars ( $values [$column[0]] );
+		$allcolumns = node_schema ( $this->properties ['type'] );
+		$collumns = array();
+		foreach ( $allcolumns as $column => $value ) {
+			$values [$column] = $this->properties [$column];
+			$collumns [] = $column;
+			if (is_string ( $values [$column] )) {
+				$values [$column] = htmlspecialchars ( $values [$column] );
 			}
-			$allcolumns []=$column[0];
 		}
-		if ($this->properties ['nid'] == 0) {
-			$allcolumns = implode ( ",", $allcolumns );
+		if ($this->properties ['id'] == 0) {
+			$collumns = implode ( ",", $collumns );
 			$values = "'" . implode ( "','", $values ) . "'";
-			$result = $db->query ( "INSERT INTO $tablename ($allcolumns) VALUES ($values)" );
+			$result = $db->query ( "INSERT INTO {$this->properties ['type']} ($collumns) VALUES ($values)" );
 			if ($result) {
 				$db->close ();
 				return TRUE;
 			}
 		} else {
-			$nid = $this->properties ['nid'];
+			$nid = $this->properties ['id'];
 			$settings = "";
 			foreach ( $values as $key => $value ) {
 				$settings .= "$key='$value',";
 			}
 			$settings = rtrim ( $settings, ',' );
-			$result = $db->query ( "UPDATE $tablename SET $settings WHERE id= $nid" );
+			$result = $db->query ( "UPDATE {$this->properties ['type']} SET $settings WHERE id= $nid" );
 			if ($result) {
 				$db->close ();
 				return TRUE;
@@ -48,12 +46,11 @@ class Node {
 		}
 	}
 	public function GetNode() {
-		$dbConf = new DBConfig ();
-		$db = new mysqli ( $dbConf->host (), $dbConf->user (), $dbConf->password (), $dbConf->name () );
+		$db = new mysqli ( SHORTDBHOST, SHORTDBUSER, SHORTDBPASSWORD, SHORTDBNAME );
 		if ($db->connect_error) {
 			die ( "Database connection error: " . $db->connect_error );
 		}
-		$nid = $this->properties ['nid'];
+		$nid = $this->properties ['id'];
 		$result = $db->query ( "SELECT * FROM $this->type WHERE id = $nid" );
 		if ($result) {
 			while ( $Node = $result->fetch_array ( MYSQLI_ASSOC ) ) {
@@ -63,6 +60,8 @@ class Node {
 		}
 	}
 	public function EditForm() {
-		return template_out ( "edit-{$this->type}-form", array_merge($this->properties,array('type'=>$this->type)) );
+		return template_out ( "edit-{$this->type}-form", array_merge ( $this->properties, array (
+				'type' => $this->type 
+		) ) );
 	}
 }

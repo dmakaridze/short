@@ -1,12 +1,11 @@
 <?php
 class NodeList {
 	private $Nodes;
-	private $Type;
 	public function display() {
 		$render = '<table>';
 		if (is_array ( $this->Nodes )) {
 			foreach ( $this->Nodes as $Node ) {
-				$render .= sprintf ( "<tr><td>%s</td><td><a href=\"/admin/edit/%s/%d\">Edit</a></td><td></td></tr>", $Node ['title'], $this->Type, $Node ['id'] );
+				$render .= sprintf ( "<tr><td>%s</td><td><a href=\"/admin/edit/%s/%d\">Edit</a></td><td></td></tr>", $Node ['title'], $Node ['type'], $Node ['id'] );
 			}
 		}
 		$render .= '</table>';
@@ -22,14 +21,11 @@ class NodeList {
 		} else {
 			die ( "$type is invalid node type!" );
 		}
-		$dbConf = new DBConfig ();
-		$db = new mysqli ( $dbConf->host (), $dbConf->user (), $dbConf->password (), $dbConf->name () );
+		$db = new mysqli ( SHORTDBHOST, SHORTDBUSER, SHORTDBPASSWORD, SHORTDBNAME );
 		if ($db->connect_error) {
 			die ( "Database connection error: " . $db->connect_error );
 		}
-		$this->Type = $type;
 		foreach ( $tables as $tb ) {
-			print_r($tb);
 			$result = $db->query ( "SELECT * FROM $tb" );
 			if ($result) {
 				while ( $Node = $result->fetch_array ( MYSQLI_ASSOC ) ) {

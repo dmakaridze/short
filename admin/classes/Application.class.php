@@ -17,12 +17,11 @@ class Application {
 		$this->regions ['content'] = '';
 	}
 	public function run() {
-		print_r($this);
 		echo "\r\n</br>\r\n";
 		session_start ();
 		if (! isset ( $_SESSION ['name'] ) && ($this->com != 'login') && ($this->com != 'verify')) {
 			header ( "Location:/admin/login" );
-			return TRUE;
+			return '';
 		}
 		if (($this->com != 'login') && ($this->com != 'verify')) {
 			$mainmenu = new AdminMenu ();
@@ -40,7 +39,7 @@ class Application {
 				setcookie ( session_name (), "", time () - 3600 );
 				session_destroy ();
 				header ( "Location: /admin/login/You are successfully logged out" );
-				return TRUE;
+				return '';
 			case 'verify' :
 				$user = new User ( $_POST ['user'], $_POST ['pass'] );
 				if ($user->CheckUser ()) {
@@ -48,7 +47,7 @@ class Application {
 				} else {
 					header ( "Location:/admin/login/Incorrect username or password" );
 				}
-				return TRUE;
+				return '';
 			case 'adminmenu' :
 				$this->regions ['content'] = $mainmenu->Edit ();
 				break;
@@ -57,26 +56,28 @@ class Application {
 				$this->regions ['content'] = $Nodes->display ();
 				break;
 			case 'add' :
-				require_once APPREALPATH . '/admin/inc/nodeSchema.php';
-				$Node = new Node ( $this->msg, nodeSchema($this->msg) );
+				$Node = new Node ( $this->msg, node_schema($this->msg) );
 				$this->regions ['content'] = $Node->EditForm ();
 				break;
-			case 'putnode' :
+			case 'put' :
 				$Node = new Node ( $this->msg, $_POST );
 				if ($Node->PutNode ( ) === TRUE) {
 					header ( "Location:/admin" );
+					return '';
+				} else {
+					return 'Error create new node';
 				}
-				break;
-			case 'editnode' :				
+				
+			case 'edit' :				
 				$Node = new Node ( $this->msg, array (
-						'nid' => $this->id 
+						'id' => $this->id 
 				) );
 				$Node->GetNode ();
 				$this->regions ['content'] = $Node->EditForm ();
 				break;
 			default :
 		}
-		print template_out ( 'admin', array (
+		return template_out ( 'admin', array (
 				'title' => 'Administration Panel',
 				'content' => $this->regions ['content'],
 				'leftcol' => $this->regions ['leftcol'] 
